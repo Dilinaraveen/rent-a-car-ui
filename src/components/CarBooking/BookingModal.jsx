@@ -1,6 +1,6 @@
 import React from "react";
-import CarCard from "../Home/CarCard";
-import Form from "./Form";
+import BookingForm from "./BookingForm";
+import CarThumbnail from "../Cars/CarThumbnail";
 
 function BookingModal({ selectedCar }) {
 
@@ -14,13 +14,14 @@ function BookingModal({ selectedCar }) {
          </div>
          <div className="grid grid-cols-1 md:grid-cols-2">
           <div>
-            <CarCard car={selectedCar} />
+            
+            <CarThumbnail car={selectedCar} />
           </div>
           <div>
-            <Form />
+            <BookingForm  />
           </div>
          </div>
-          <button className="btn">Close</button>
+          
         </form>
       
     </div>
