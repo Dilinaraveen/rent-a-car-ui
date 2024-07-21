@@ -1,6 +1,6 @@
 import React from "react";
 
-function UpdateForm() {
+function UpdateForm({ selectedCar }) {
   return (
     <div>
       <div className="flex gap-5 mb-5">
@@ -11,6 +11,7 @@ function UpdateForm() {
             placeholder="Type here"
             name="name"
             className="input input-bordered w-full max-w-lg"
+            value={selectedCar?.name}
           />
         </div>
         <div className="flex flex-col w-full">
@@ -20,6 +21,7 @@ function UpdateForm() {
             placeholder="Type here"
             name="brand"
             className="input input-bordered w-full max-w-lg"
+            value={selectedCar?.brand}
           />
         </div>
       </div>
@@ -31,6 +33,7 @@ function UpdateForm() {
             placeholder="Type here"
             name="color"
             className="input input-bordered w-full max-w-lg"
+            value={selectedCar?.color}
           />
         </div>
         <div className="flex flex-col w-full">
@@ -38,14 +41,15 @@ function UpdateForm() {
           <select
             className="select select-bordered w-full max-w-lg"
             name="type"
+            value={selectedCar?.type}
           >
             <option disabled selected>
               Select Type
             </option>
             <option>Sedan</option>
             <option>SUV</option>
+            <option>Electric</option>
             <option>Hatchback</option>
-            <option>Coupe</option>
           </select>
         </div>
       </div>
@@ -55,15 +59,17 @@ function UpdateForm() {
           <input
             type="text"
             placeholder="Type here"
-            name="type"
+            name="year"
             className="input input-bordered w-full max-w-lg"
+            value={selectedCar?.year}
           />
         </div>
         <div className="flex flex-col w-full">
           <label className="text-gray-400">Transmission</label>
           <select
             className="select select-bordered w-full max-w-lg"
-            name="type"
+            name="transmission"
+            value={selectedCar?.transmission}
           >
             <option disabled selected>
               Select Transmission
@@ -75,12 +81,13 @@ function UpdateForm() {
       </div>
       <div className="flex gap-5 mb-5">
         <div className="flex flex-col w-full">
-          <label className="text-gray-400">Seating</label>
+          <label className="text-gray-400">Seats</label>
           <input
             type="text"
             placeholder="Type here"
-            name="seating"
+            name="seats"
             className="input input-bordered w-full max-w-lg"
+            value={selectedCar?.seats}
           />
         </div>
         <div className="flex flex-col w-full">
@@ -88,20 +95,22 @@ function UpdateForm() {
           <input
             type="number"
             placeholder="Type here"
-            name="avgFuel"
+            name="carAvg"
             className="input input-bordered w-full max-w-lg"
+            value={selectedCar?.carAvg}
           />
         </div>
       </div>
       <div className="flex flex-col w-full">
-          <label className="text-gray-400">Price</label>
-          <input
-            type="number"
-            placeholder="Type here"
-            name="number"
-            className="input input-bordered w-full max-w-lg"
-          />
-        </div>
+        <label className="text-gray-400">Price</label>
+        <input
+          type="number"
+          placeholder="Type here"
+          name="number"
+          className="input input-bordered w-full max-w-lg"
+          value={selectedCar?.price}
+        />
+      </div>
       <div className="modal-action">
         <button className="btn">Close</button>
         <button

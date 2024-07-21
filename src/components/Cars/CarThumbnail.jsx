@@ -19,7 +19,7 @@ border-blue-500 "
       </h2>
       <div className="flex justify-center">
         <img
-          src={car?.image}
+          src={`data:image/jpeg;base64,${car.returnedImage}`}
           alt={car?.name}
           width={220}
           height={200}
@@ -31,7 +31,7 @@ border-blue-500 "
         <div className="text-center text-gray-500">
           <PiSteeringWheelFill className="w-full text-[22px] mb-2" />
           <h2 className="line-clamp-5 text-[14px] font-light">
-          {car?.carType}
+          {car?.type}
           </h2>
         </div>
         <div className="text-center text-gray-500">

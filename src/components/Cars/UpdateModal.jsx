@@ -8,7 +8,7 @@ function UpdateModal({ selectedCar }) {
       <form method="dialog">
         <div className="border-b-[1px] pb-2">
           <h3 className="text-[30px] font-light text-gray-400">
-            Rent A Car Now!
+            Update Car
           </h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2">
@@ -30,7 +30,7 @@ function UpdateModal({ selectedCar }) {
             <input type="file" id="image" accept="image/*" className="hidden" />
           </div>
           <div>
-            <UpdateForm />
+            <UpdateForm selectedCar={selectedCar} />
           </div>
         </div>
       </form>

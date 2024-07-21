@@ -1,8 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {SignUpService} from "../services/auth.service";
+import toast from "react-hot-toast";
 
 function SignUp() {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSignup = async (event) => {
+    event.preventDefault();
+    try {
+      const payload = { email,password,name };
+      const response = await SignUpService(payload);
+      console.log(response);
+      if (response) {
+        toast.success("Successfully signed up. Please login to continue.");
+        navigate("/login");
+      }
+    } catch (error) {
+      if (error.response && error.response.data ) {
+        toast.error(error.response.data || "Signup failed. Please try again.");
+      } else {
+        toast.error("Signup failed. Please try again.");
+      }
+    }
+  };
   return (
     <div className="hero min-h-screen">
       <div className="hero-content flex-col">
@@ -11,7 +37,7 @@ function SignUp() {
           <p className="py-6">Join Us Today! Create your account in seconds.</p>
         </div>
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-          <form className="card-body">
+          <form className="card-body" onSubmit={handleSignup}>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -20,6 +46,8 @@ function SignUp() {
                 type="email"
                 placeholder="Email"
                 className="input input-bordered"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -31,6 +59,8 @@ function SignUp() {
                 type="text"
                 placeholder="Username"
                 className="input input-bordered"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
@@ -42,6 +72,8 @@ function SignUp() {
                 type="password"
                 placeholder="Password"
                 className="input input-bordered"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <label className="label">

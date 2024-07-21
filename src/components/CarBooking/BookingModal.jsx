@@ -2,7 +2,7 @@ import React from "react";
 import BookingForm from "./BookingForm";
 import CarThumbnail from "../Cars/CarThumbnail";
 
-function BookingModal({ selectedCar }) {
+function BookingModal({ selectedCar}) {
 
 
   return (

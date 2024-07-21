@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import SideNav from '../components/Dashboard/SideNav'
 import TopHeader from '../components/Dashboard/TopHeader'
-import Cars from '../components/Cars/Cars'
+import { Outlet } from 'react-router-dom';
 
 function Dashboard() {
   const [toggle, setToggle] = useState(false);
@@ -23,7 +23,7 @@ function Dashboard() {
       <div className='md:ml-64'>
         <TopHeader setToggleBar={() => 
           setToggle(true)} />
-          <Cars />
+          <Outlet />
       </div>
 
     </div>
