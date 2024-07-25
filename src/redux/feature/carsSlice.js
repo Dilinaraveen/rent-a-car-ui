@@ -19,6 +19,7 @@ export const searchCars = createAsyncThunk('cars/searchCars', async (payload) =>
   return response;
 });
 
+
 const initialState = {
   cars: [],
   loading: false,

@@ -71,7 +71,7 @@ function SideNav({ closeSideBar }) {
       <div className="p-4 border-t">
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 p-4 hover:bg-red-500 hover:rounded-3xl hover:text-white text-gray-500 transition-all"
+          className="w-full border border-red-500 rounded-xl flex items-center justify-center gap-2 p-4 hover:bg-red-500 hover:rounded-xl hover:text-white text-red-500 transition-all"
         >
           <span>Log out</span>
         </button>

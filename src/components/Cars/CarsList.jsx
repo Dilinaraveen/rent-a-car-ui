@@ -6,12 +6,12 @@ import UpdateModal from "./UpdateModal";
 import ConfirmationModal from "../ConfirmationModal";
 import CarSearchInput from "./CarSearchInput";
 import { useDispatch, useSelector } from "react-redux";
-import { GetAllCars, GetAllCarsAdmin } from "../../services/cars.service";
 import { fetchAllCars, fetchAllCarsAdmin } from "../../redux/feature/carsSlice";
+import toast from "react-hot-toast";
 
 function CarsList() {
   const dispatch = useDispatch();
-  //const [cars, setCars] = useState([]);
+  
   const [selectedCar, setSelectedCar] = useState(null);
 
   const { userRole, jwt } = useSelector((state) => state.auth);
@@ -24,29 +24,16 @@ function CarsList() {
     } else {
       dispatch(fetchAllCars());
     }
-    console.log("cars",cars);
+    
   }, [dispatch,jwt, userRole]);
 
-  // const fetchAllCarsAdmin = async () => {
-  //   try {
-  //     const response = await GetAllCarsAdmin(jwt);
-  //     console.log(response);
-  //     setCars(response); // Assuming response.data contains an array of cars
-  //   } catch (error) {
-  //     console.error("Error fetching cars:", error);
-  //   }
-  // };
+  useEffect(() => {
+    if (error) {
+      toast.error("Error in fetching cars");
+    }
+  }, [error]);
 
-  // const fetchAllCars = async () => {
-  //   try {
-  //     const response = await GetAllCars();
-  //     console.log(response);
-  //     setCars(response); // Assuming response.data contains an array of cars
-  //   } catch (error) {
-  //     console.error("Error fetching cars:", error);
-  //   }
-  // };
-
+ 
   const handleUpdate = (car) => {
     setSelectedCar(car);
     userRole === "ADMIN"
@@ -66,7 +53,12 @@ function CarsList() {
       <div
         className="grid grid-cols-1 mt-2 md:grid-cols-2 lg:grid-cols-3"
       >
-        {cars &&
+         {loading && (
+          <div className="flex justify-center items-start min-h-screen w-full md:w-[800px]">
+            <span className="loading loading-spinner loading-lg bg-blue-500"></span>
+          </div>
+        )}
+        {!loading &&cars &&
           cars.map((car, index) => (
             <div key={index}>
               {userRole === "ADMIN" ? (

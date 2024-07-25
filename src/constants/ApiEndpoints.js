@@ -6,5 +6,8 @@ export const API_ENDPOINTS = {
     LOGOUT: '/api/auth/logout',
     GET_ALL_CARS_ADMIN: '/api/admin/car',
     GET_ALL_CARS: '/api/customer/cars',
-    SEARCH_CARS: '/api/customer/car/search'
+    SEARCH_CARS: '/api/customer/car/search',
+    GET_CAR_BRANDS: '/api/customer/car/brands',
+    ADD_NEW_CAR: '/api/admin/car',
+    UPDATE_CAR:'/api/admin/car/'
 }

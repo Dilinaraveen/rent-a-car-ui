@@ -1,19 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Button";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { searchCars } from "../../redux/feature/carsSlice";
-
+import { GetCarBrands } from "../../services/cars.service";
+import { IoMdAdd } from "react-icons/io";
+import ConfirmationModal from "../ConfirmationModal";
+import AddNewCarModal from "./AddNewCarModal";
 
 function CarSearchInput() {
   const dispatch = useDispatch();
 
-  // Define state for each filter
-  const [brand, setBrand] = useState('');
-  const [type, setType] = useState('');
-  const [color, setColor] = useState('');
-  const [transmission, setTransmission] = useState('');
+  const [brand, setBrand] = useState("");
+  const [type, setType] = useState("");
+  const [color, setColor] = useState("");
+  const [transmission, setTransmission] = useState("");
+  const [carBrands, setCarBrands] = useState([]);
 
-  // Handle form submission
+  useEffect(() => {
+    getCarBrands();
+  }, []);
+
+  const getCarBrands = async () => {
+    try {
+      const response = await GetCarBrands();
+
+      setCarBrands(response);
+    } catch (error) {
+      console.error("Error fetching car brands:", error);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
@@ -26,24 +42,31 @@ function CarSearchInput() {
   };
 
   const handleClear = () => {
-    
-    console.log('Clear button clicked');
+    console.log("Clear button clicked");
     setBrand("");
     setType("");
     setColor("");
     setTransmission("");
-    console.log('State after clear:', { brand, type, color, transmission });
-    dispatch(searchCars({
-      brand: '',
-      type: '',
-      color: '',
-      transmission: '',
-    }));
+    console.log("State after clear:", { brand, type, color, transmission });
+    dispatch(
+      searchCars({
+        brand: "",
+        type: "",
+        color: "",
+        transmission: "",
+      })
+    );
   };
 
+  const handleAddNewCar = () => {
+    document.getElementById("my_modal_3").showModal(); // Open the modal
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col justify-center md:items-start mb-4 p-2">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col justify-center md:items-start mb-4 p-2"
+    >
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 mb-4">
         <select
           className="select select-bordered w-full max-w-xs"
@@ -53,11 +76,11 @@ function CarSearchInput() {
           <option value="" disabled>
             Brand
           </option>
-          <option value="BMW">BMW</option>
-          <option value="Audi">Audi</option>
-          <option value="Toyota">Toyota</option>
-          <option value="Tesla">Tesla</option>
-          <option value="Mercedes">Mercedes</option>
+          {carBrands.map((carBrand) => (
+            <option key={carBrand} value={carBrand}>
+              {carBrand}
+            </option>
+          ))}
         </select>
 
         <select
@@ -100,10 +123,22 @@ function CarSearchInput() {
           <option value="Manual">Manual</option>
         </select>
       </div>
-      <div className="flex gap-2">
-        <Button type="submit" placeholder="Search" />
-        <Button type="button" onClick={handleClear} placeholder="Clear" secondary/>
+      <div className="flex justify-between items-center w-full">
+        <div className="flex gap-2">
+          <Button type="submit" placeholder="Search" />
+          <Button
+            type="button"
+            onClick={handleClear}
+            placeholder="Clear"
+            secondary
+          />
+        </div>
+
+        <Button type="button" placeholder="Add New Car" icon={<IoMdAdd />} onClick={handleAddNewCar}/>
       </div>
+      <dialog id="my_modal_3" className="modal">
+          <AddNewCarModal />
+        </dialog>
     </form>
   );
 }

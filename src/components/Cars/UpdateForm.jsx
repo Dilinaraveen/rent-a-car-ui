@@ -1,6 +1,6 @@
 import React from "react";
 
-function UpdateForm({ selectedCar }) {
+function UpdateForm({ formData, handleInputChange }) {
   return (
     <div>
       <div className="flex gap-5 mb-5">
@@ -11,7 +11,8 @@ function UpdateForm({ selectedCar }) {
             placeholder="Type here"
             name="name"
             className="input input-bordered w-full max-w-lg"
-            value={selectedCar?.name}
+            value={formData.name}
+            onChange={handleInputChange}
           />
         </div>
         <div className="flex flex-col w-full">
@@ -21,7 +22,8 @@ function UpdateForm({ selectedCar }) {
             placeholder="Type here"
             name="brand"
             className="input input-bordered w-full max-w-lg"
-            value={selectedCar?.brand}
+            value={formData.brand}
+            onChange={handleInputChange}
           />
         </div>
       </div>
@@ -33,7 +35,8 @@ function UpdateForm({ selectedCar }) {
             placeholder="Type here"
             name="color"
             className="input input-bordered w-full max-w-lg"
-            value={selectedCar?.color}
+            value={formData.color}
+            onChange={handleInputChange}
           />
         </div>
         <div className="flex flex-col w-full">
@@ -41,9 +44,10 @@ function UpdateForm({ selectedCar }) {
           <select
             className="select select-bordered w-full max-w-lg"
             name="type"
-            value={selectedCar?.type}
+            value={formData.type}
+            onChange={handleInputChange}
           >
-            <option disabled selected>
+            <option value="" disabled>
               Select Type
             </option>
             <option>Sedan</option>
@@ -61,7 +65,8 @@ function UpdateForm({ selectedCar }) {
             placeholder="Type here"
             name="year"
             className="input input-bordered w-full max-w-lg"
-            value={selectedCar?.year}
+            value={formData.year}
+            onChange={handleInputChange}
           />
         </div>
         <div className="flex flex-col w-full">
@@ -69,9 +74,10 @@ function UpdateForm({ selectedCar }) {
           <select
             className="select select-bordered w-full max-w-lg"
             name="transmission"
-            value={selectedCar?.transmission}
+            value={formData.transmission}
+            onChange={handleInputChange}
           >
-            <option disabled selected>
+            <option value="" disabled>
               Select Transmission
             </option>
             <option>Auto</option>
@@ -87,7 +93,8 @@ function UpdateForm({ selectedCar }) {
             placeholder="Type here"
             name="seats"
             className="input input-bordered w-full max-w-lg"
-            value={selectedCar?.seats}
+            value={formData.seats}
+            onChange={handleInputChange}
           />
         </div>
         <div className="flex flex-col w-full">
@@ -97,7 +104,8 @@ function UpdateForm({ selectedCar }) {
             placeholder="Type here"
             name="carAvg"
             className="input input-bordered w-full max-w-lg"
-            value={selectedCar?.carAvg}
+            value={formData.carAvg}
+            onChange={handleInputChange}
           />
         </div>
       </div>
@@ -106,19 +114,11 @@ function UpdateForm({ selectedCar }) {
         <input
           type="number"
           placeholder="Type here"
-          name="number"
+          name="price"
           className="input input-bordered w-full max-w-lg"
-          value={selectedCar?.price}
+          value={formData.price}
+          onChange={handleInputChange}
         />
-      </div>
-      <div className="modal-action">
-        <button className="btn">Close</button>
-        <button
-          className="btn bg-blue-500 text-white
-hover:bg-blue-800"
-        >
-          Save
-        </button>
       </div>
     </div>
   );
