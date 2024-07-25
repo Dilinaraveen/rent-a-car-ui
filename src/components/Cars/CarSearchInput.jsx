@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { searchCars } from "../../redux/feature/carsSlice";
 import { GetCarBrands } from "../../services/cars.service";
 import { IoMdAdd } from "react-icons/io";
@@ -15,6 +15,8 @@ function CarSearchInput() {
   const [color, setColor] = useState("");
   const [transmission, setTransmission] = useState("");
   const [carBrands, setCarBrands] = useState([]);
+
+  const { userRole } = useSelector((state) => state.auth);
 
   useEffect(() => {
     getCarBrands();
@@ -134,11 +136,18 @@ function CarSearchInput() {
           />
         </div>
 
-        <Button type="button" placeholder="Add New Car" icon={<IoMdAdd />} onClick={handleAddNewCar}/>
+        {userRole === "ADMIN" ? (
+          <Button
+            type="button"
+            placeholder="Add New Car"
+            icon={<IoMdAdd />}
+            onClick={handleAddNewCar}
+          />
+        ) : null}
       </div>
       <dialog id="my_modal_3" className="modal">
-          <AddNewCarModal />
-        </dialog>
+        <AddNewCarModal />
+      </dialog>
     </form>
   );
 }

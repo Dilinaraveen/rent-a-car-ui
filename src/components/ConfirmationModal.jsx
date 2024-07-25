@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ConfirmationModal({heading, body}) {
+function ConfirmationModal({heading, body, onClick}) {
   return (
     <div className="modal-box w-3/4 md:1/2 max-w-5xl">
       
@@ -13,7 +13,7 @@ function ConfirmationModal({heading, body}) {
          </div>
          <div className='flex justify-end gap-2 mt-4'>
          <button className="btn btn-md btn-outline">Cancel</button>
-         <button className="btn btn-md bg-red-600 text-white">Delete</button>
+         <button type='button' onClick={onClick} className="btn btn-md bg-red-600 text-white">Delete</button>
          </div>
           
         </form>

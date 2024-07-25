@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { UpdateCar } from "../../services/cars.service";
 import toast from "react-hot-toast";
 import { fetchAllCars, fetchAllCarsAdmin } from "../../redux/feature/carsSlice";
+import isJwtValid from "../../utilities/isJwtValid";
 
 function UpdateModal({ selectedCar }) {
   const [formData, setFormData] = useState({
@@ -79,13 +80,20 @@ function UpdateModal({ selectedCar }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = new FormData();
+
+    // Create FormData object
+    const formDataToSend = new FormData();
     for (const key in formData) {
-      payload.append(key, formData[key]);
+      if (formData[key] !== undefined && formData[key] !== null) {
+        formDataToSend.append(key, formData[key]);
+      }
     }
 
+    console.log("Form Data before API call:", formDataToSend); // Ensure correct structure
+
     try {
-      await UpdateCar(selectedCar.id, payload, jwt);
+      console.log(isJwtValid(jwt));
+      const response = await UpdateCar(selectedCar.id, formDataToSend, jwt);
       toast.success("Car updated successfully!");
       if (userRole === "ADMIN") {
         dispatch(fetchAllCarsAdmin(jwt));
@@ -97,6 +105,8 @@ function UpdateModal({ selectedCar }) {
       toast.error("Error updating car");
     }
   };
+  
+  
 
   return (
     <div className="modal-box w-11/12 max-w-5xl">

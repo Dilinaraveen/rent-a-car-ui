@@ -60,6 +60,8 @@ export const AddNewCar = async (payload, token) => {
       formData.append(key, payload[key]);
     });
 
+    console.log(payload);
+
     const response = await axios.post(
       API_BASE_URL + API_ENDPOINTS.ADD_NEW_CAR,
       payload,
@@ -77,17 +79,11 @@ export const AddNewCar = async (payload, token) => {
   }
 };
 
-export const UpdateCar = async (carId, payload, token) => {
- 
+export const UpdateCar = async (carId, formData, token) => {
   try {
-    const formData = new FormData();
-    Object.keys(payload).forEach((key) => {
-      formData.append(key, payload[key]);
-    });
-    
     const response = await axios.put(
       API_BASE_URL + API_ENDPOINTS.UPDATE_CAR + carId,
-      payload,
+      formData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -95,10 +91,31 @@ export const UpdateCar = async (carId, payload, token) => {
         },
       }
     );
-    
+    console.log(response);
     return response.data;
   } catch (error) {
-    console.error("Error adding new car:", error);
+    console.error("Error updating car:", error);
+    throw error;
+  }
+};
+
+
+export const DeleteCar = async (carId, token) => {
+  try {
+    const response = await axios.delete(
+      API_BASE_URL + API_ENDPOINTS.DELETE_CAR + carId,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        },
+      }
+    );
+    console.log(response);
+    return response.status;
+  } catch (error) {
+    console.error("Error deleting car:", error);
     throw error;
   }
 };

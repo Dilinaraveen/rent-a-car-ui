@@ -8,6 +8,7 @@ import CarSearchInput from "./CarSearchInput";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCars, fetchAllCarsAdmin } from "../../redux/feature/carsSlice";
 import toast from "react-hot-toast";
+import { DeleteCar } from "../../services/cars.service";
 
 function CarsList() {
   const dispatch = useDispatch();
@@ -43,8 +44,34 @@ function CarsList() {
 
   const handleDelete = (car) => {
     setSelectedCar(car);
-    document.getElementById("my_modal_3").showModal();
+    console.log("selectedCar",car)
+    document.getElementById("my_modal_4").showModal();
   };
+
+  const confirmDelete = async () => {
+    try {
+      if (selectedCar) {
+        const status = await DeleteCar(selectedCar.id, jwt);
+        if (status === 200) {
+          toast.success("Car deleted successfully");
+          document.getElementById("my_modal_4").close();
+          setSelectedCar(null);
+          if (userRole === "ADMIN") {
+            dispatch(fetchAllCarsAdmin(jwt));
+          } else {
+            dispatch(fetchAllCars());
+          }
+        } else {
+          throw new Error("Failed to delete car");
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting car:", error);
+      toast.error("Failed to delete car");
+    }
+  };
+  
+  
 
   return (
     <>
@@ -86,10 +113,11 @@ function CarsList() {
           {selectedCar && <BookingModal selectedCar={selectedCar} />}
         </dialog>
 
-        <dialog id="my_modal_3" className="modal">
+        <dialog id="my_modal_4" className="modal">
           <ConfirmationModal
             heading="Delete Car"
             body="Are you sure you want to delete this car?"
+            onClick={confirmDelete}
           />
         </dialog>
       </div>
