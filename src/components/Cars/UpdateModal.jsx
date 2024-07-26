@@ -4,8 +4,7 @@ import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { UpdateCar } from "../../services/cars.service";
 import toast from "react-hot-toast";
-import { fetchAllCars, fetchAllCarsAdmin } from "../../redux/feature/carsSlice";
-import isJwtValid from "../../utilities/isJwtValid";
+import { fetchAllCarsAdmin } from "../../redux/feature/carsSlice";
 
 function UpdateModal({ selectedCar }) {
   const [formData, setFormData] = useState({
@@ -24,7 +23,7 @@ function UpdateModal({ selectedCar }) {
 
   const fileInputRef = useRef(null);
 
-  const { jwt, userRole } = useSelector((state) => state.auth);
+  const { jwt } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -66,7 +65,6 @@ function UpdateModal({ selectedCar }) {
       }));
       const previewUrl = URL.createObjectURL(file);
       setImagePreview(previewUrl);
-      console.log("Image preview URL:", previewUrl); // Check preview URL
     }
   };
 
@@ -81,32 +79,30 @@ function UpdateModal({ selectedCar }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Create FormData object
-    const formDataToSend = new FormData();
-    for (const key in formData) {
-      if (formData[key] !== undefined && formData[key] !== null) {
-        formDataToSend.append(key, formData[key]);
-      }
+    const formData = new FormData();
+    formData.append("brand", formData.brand || "");
+    formData.append("color", formData.color || "");
+    formData.append("name", formData.name || "");
+    formData.append("type", formData.type || "");
+    formData.append("transmission", formData.transmission || "");
+    formData.append("description", formData.description || "");
+    formData.append("price", formData.price ? parseInt(formData.price) : "");
+    formData.append("year", formData.year || "");
+    formData.append("carAvg", formData.carAvg ? parseInt(formData.carAvg) : "");
+    formData.append("seats", formData.seats || "");
+    if (formData.image) {
+      formData.append("image", formData.image); // This should be a File object
     }
-
-    console.log("Form Data before API call:", formDataToSend); // Ensure correct structure
-
     try {
-      console.log(isJwtValid(jwt));
-      const response = await UpdateCar(selectedCar.id, formDataToSend, jwt);
+      await UpdateCar(selectedCar.id, formData, jwt);
+
+      dispatch(fetchAllCarsAdmin());
       toast.success("Car updated successfully!");
-      if (userRole === "ADMIN") {
-        dispatch(fetchAllCarsAdmin(jwt));
-      } else {
-        dispatch(fetchAllCars());
-      }
     } catch (error) {
-      console.error("Error updating car:", error);
-      toast.error("Error updating car");
+      toast.error("Failed to update car. Please try again.");
+      console.error("Update car error:", error);
     }
   };
-  
-  
 
   return (
     <div className="modal-box w-11/12 max-w-5xl">
@@ -127,7 +123,7 @@ function UpdateModal({ selectedCar }) {
                 />
                 <button
                   type="button"
-                  onClick={handleImageClear} // Clear image preview
+                  onClick={handleImageClear}
                   className="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md hover:bg-gray-100"
                 >
                   <FaTimes className="text-red-500" />

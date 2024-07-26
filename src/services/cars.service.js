@@ -79,22 +79,24 @@ export const AddNewCar = async (payload, token) => {
   }
 };
 
-export const UpdateCar = async (carId, formData, token) => {
+export const UpdateCar = async (carId, payload, token) => {
+  
   try {
+    
     const response = await axios.put(
-      API_BASE_URL + API_ENDPOINTS.UPDATE_CAR + carId,
-      formData,
+      API_BASE_URL+API_ENDPOINTS.UPDATE_CAR+carId,
+      payload,
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       }
     );
     console.log(response);
     return response.data;
   } catch (error) {
-    console.error("Error updating car:", error);
+    console.error('Error updating car:', error.response ? error.response.data : error.message);
     throw error;
   }
 };

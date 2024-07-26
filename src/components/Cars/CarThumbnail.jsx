@@ -37,7 +37,7 @@ border-blue-500 "
         <div className="text-center text-gray-500">
           <MdAirlineSeatReclineNormal className="w-full text-[22px] mb-2" />
           <h2 className="line-clamp-5 text-[14px] font-light">
-          {car?.seat} Seat
+          {car?.seats} Seat
           </h2>
         </div>
         <div className=" text-center text-gray-500 ">
