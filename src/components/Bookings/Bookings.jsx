@@ -1,8 +1,11 @@
 import React from 'react'
+import BookingList from './BookingList'
 
 function Bookings() {
   return (
-    <div>Bookings</div>
+    <div className='p-5'>
+      <BookingList />
+    </div>
   )
 }
 

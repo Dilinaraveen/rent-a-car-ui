@@ -10,5 +10,6 @@ export const API_ENDPOINTS = {
     GET_CAR_BRANDS: '/api/customer/car/brands',
     ADD_NEW_CAR: '/api/admin/car',
     UPDATE_CAR:'/api/admin/car/',
-    DELETE_CAR:'/api/admin/car/'
+    DELETE_CAR:'/api/admin/car/',
+    BOOK_A_CAR:'/api/customer/cars/book'
 }
