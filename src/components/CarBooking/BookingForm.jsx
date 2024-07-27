@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { BookACar } from "../../services/booking.service";
-import toast from "react-hot-toast";
+import { message } from "antd";
 
 function BookingForm({carId }) {
   const { userId } = useSelector((state) => state.auth);
@@ -32,11 +32,21 @@ function BookingForm({carId }) {
     console.log(formData)
     try {
       const response = await BookACar(formData);
-      toast.success("Booking successful!");
+      setFormData({
+        userId: "",
+        carId: "",
+        pickupLocation: "",
+        fromDate: "",
+        toDate: "",
+        pickupTime: "",
+        dropTime: "",
+        contactNumber: "",
+      });
+      message.success("Booking successful!");
       document.getElementById("my_modal_2").close();
     } catch (error) {
       console.error("Error booking car:", error);
-      toast.error("Error booking car")
+      message.error("Error booking car")
     }
   };
 
@@ -111,7 +121,7 @@ function BookingForm({carId }) {
         />
       </div>
       <div className="modal-action">
-        <button type="button" className="btn">Close</button>
+        <button onClick={() => document.getElementById("my_modal_2").close()} type="button" className="btn">Close</button>
         <button
           type="submit"
           className="btn bg-blue-500 text-white hover:bg-blue-800"

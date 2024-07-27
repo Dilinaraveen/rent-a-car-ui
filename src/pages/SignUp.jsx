@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import {SignUpService} from "../services/auth.service";
-import toast from "react-hot-toast";
+import { message } from "antd";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -18,14 +18,14 @@ function SignUp() {
       const response = await SignUpService(payload);
       console.log(response);
       if (response) {
-        toast.success("Successfully signed up. Please login to continue.");
+        message.success("Successfully signed up. Please login to continue.");
         navigate("/login");
       }
     } catch (error) {
       if (error.response && error.response.data ) {
-        toast.error(error.response.data || "Signup failed. Please try again.");
+        message.error(error.response.data || "Signup failed. Please try again.");
       } else {
-        toast.error("Signup failed. Please try again.");
+        message.error("Signup failed. Please try again.");
       }
     }
   };

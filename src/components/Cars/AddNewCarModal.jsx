@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { AddNewCar } from "../../services/cars.service";
-import toast from "react-hot-toast";
 import { fetchAllCars, fetchAllCarsAdmin } from "../../redux/feature/carsSlice";
+import { message } from "antd";
 
 function AddNewCarModal() {
   const [formData, setFormData] = useState({
@@ -51,7 +51,7 @@ function AddNewCarModal() {
 
     try {
       await AddNewCar(payload, jwt);
-      toast.success("Car added successfully!");
+      message.success("Car added successfully!");
       document.getElementById("my_modal_3").close();
       if (userRole === "ADMIN") {
         dispatch(fetchAllCarsAdmin(jwt));
@@ -74,7 +74,7 @@ function AddNewCarModal() {
       setImagePreview(null);
     } catch (error) {
       console.error("Error adding car:", error);
-      toast.error("Error adding car");
+      message.error("Error adding car");
     }
   };
 

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { searchCars } from "../../redux/feature/carsSlice";
 import { GetCarBrands } from "../../services/cars.service";
 import { IoMdAdd } from "react-icons/io";
-import ConfirmationModal from "../ConfirmationModal";
 import AddNewCarModal from "./AddNewCarModal";
 
 function CarSearchInput() {

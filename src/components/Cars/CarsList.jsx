@@ -7,8 +7,8 @@ import ConfirmationModal from "../ConfirmationModal";
 import CarSearchInput from "./CarSearchInput";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCars, fetchAllCarsAdmin } from "../../redux/feature/carsSlice";
-import toast from "react-hot-toast";
 import { DeleteCar } from "../../services/cars.service";
+import { message } from "antd";
 
 function CarsList() {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ function CarsList() {
 
   useEffect(() => {
     if (error) {
-      toast.error("Error in fetching cars");
+      message.error("Error in fetching cars");
     }
   }, [error]);
 
@@ -53,7 +53,7 @@ function CarsList() {
       if (selectedCar) {
         const status = await DeleteCar(selectedCar.id, jwt);
         if (status === 200) {
-          toast.success("Car deleted successfully");
+          message.success("Car deleted successfully");
           document.getElementById("my_modal_4").close();
           setSelectedCar(null);
           if (userRole === "ADMIN") {
@@ -67,7 +67,7 @@ function CarsList() {
       }
     } catch (error) {
       console.error("Error deleting car:", error);
-      toast.error("Failed to delete car");
+      message.error("Failed to delete car");
     }
   };
   

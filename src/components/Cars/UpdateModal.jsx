@@ -3,8 +3,8 @@ import UpdateForm from "./UpdateForm";
 import { FaCloudUploadAlt, FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { UpdateCar } from "../../services/cars.service";
-import toast from "react-hot-toast";
 import { fetchAllCarsAdmin } from "../../redux/feature/carsSlice";
+import { message } from "antd";
 
 function UpdateModal({ selectedCar }) {
   const [formData, setFormData] = useState({
@@ -97,9 +97,9 @@ function UpdateModal({ selectedCar }) {
       await UpdateCar(selectedCar.id, formData, jwt);
 
       dispatch(fetchAllCarsAdmin());
-      toast.success("Car updated successfully!");
+      message.success("Car updated successfully!");
     } catch (error) {
-      toast.error("Failed to update car. Please try again.");
+      message.error("Failed to update car. Please try again.");
       console.error("Update car error:", error);
     }
   };

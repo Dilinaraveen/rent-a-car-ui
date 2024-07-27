@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {LoginService} from "../services/auth.service";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/feature/authSlice";
-import toast from 'react-hot-toast';
+import { message } from "antd";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -24,12 +24,12 @@ function Login() {
             userRole: response.userRole,
             userId: response.userId
         }));
-        toast.success('Successfully logged in!');
+        message.success('Successfully logged in!');
         navigate("/dashboard/cars");
         
     } catch (error) {
         
-        toast.error("Login failed."+error.message);
+        message.error("Login failed."+error.message);
     }
 };
 

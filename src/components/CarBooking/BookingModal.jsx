@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import BookingForm from "./BookingForm";
 import CarThumbnail from "../Cars/CarThumbnail";
 
