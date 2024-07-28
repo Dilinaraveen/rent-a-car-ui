@@ -14,6 +14,7 @@ function CarsList() {
   const dispatch = useDispatch();
   
   const [selectedCar, setSelectedCar] = useState(null);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const { userRole, jwt } = useSelector((state) => state.auth);
   const { cars, loading, error } = useSelector((state) => state.cars);
@@ -42,11 +43,12 @@ function CarsList() {
       : document.getElementById("my_modal_2").showModal();
   };
 
+  
   const handleDelete = (car) => {
     setSelectedCar(car);
-    console.log("selectedCar",car)
-    document.getElementById("my_modal_4").showModal();
+    setIsDeleteModalVisible(true);
   };
+
 
   const confirmDelete = async () => {
     try {
@@ -54,7 +56,7 @@ function CarsList() {
         const status = await DeleteCar(selectedCar.id, jwt);
         if (status === 200) {
           message.success("Car deleted successfully");
-          document.getElementById("my_modal_4").close();
+          setIsDeleteModalVisible(false);
           setSelectedCar(null);
           if (userRole === "ADMIN") {
             dispatch(fetchAllCarsAdmin(jwt));
@@ -113,13 +115,15 @@ function CarsList() {
           {selectedCar && <BookingModal selectedCar={selectedCar} />}
         </dialog>
 
-        <dialog id="my_modal_4" className="modal">
+        {selectedCar && (
           <ConfirmationModal
             heading="Delete Car"
             body="Are you sure you want to delete this car?"
-            onClick={confirmDelete}
+            isVisible={isDeleteModalVisible}
+            onConfirm={confirmDelete}
+            onCancel={() => setIsDeleteModalVisible(false)}
           />
-        </dialog>
+        )}
       </div>
     </>
   );

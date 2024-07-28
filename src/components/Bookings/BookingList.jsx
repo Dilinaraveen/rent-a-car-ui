@@ -1,28 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Dropdown, Menu, Space, Table, Tag, message } from "antd";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { GetAllBookingsAdmin, changeBookingStatus } from "../../services/booking.service";
+import {
+  GetAllBookingsAdmin,
+  changeBookingStatus,
+  deleteBooking,
+} from "../../services/booking.service";
 import { useSelector } from "react-redux";
+import EditBookingModal from "./EditBookingModal";
+import ConfirmationModal from "../ConfirmationModal";
 
-const statusOptions = [
-    "PENDING",
-    "APPROVED",
-    "REJECTED",
-  ];
-
-const items = [
-  {
-    key: "1",
-    label: "Edit",
-  },
-  {
-    key: "2",
-    label: "Delete",
-  },
-];
+const statusOptions = ["PENDING", "APPROVED", "REJECTED"];
 
 function BookingList() {
   const [bookings, setBookings] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [currentBooking, setCurrentBooking] = useState(null);
 
   const { userRole, jwt } = useSelector((state) => state.auth);
 
@@ -42,12 +36,41 @@ function BookingList() {
   const handleStatusChange = async (bookingId, newStatus) => {
     try {
       await changeBookingStatus(jwt, bookingId, newStatus);
-      message.success(`Booking ID ${bookingId} status updated to ${newStatus}.`);
+      message.success(
+        `Booking ID ${bookingId} status updated to ${newStatus}.`
+      );
       //message.success(`Booking ID ${bookingId} status updated to ${newStatus}.`);
-      fetchBookings(); // Refresh bookings list
+      fetchBookings();
     } catch (error) {
       console.error("Failed to update booking status", error);
       message.error("Failed to update booking status.");
+    }
+  };
+
+  const handleEditClick = (booking) => {
+    setCurrentBooking(booking);
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setIsDeleteModalVisible(false);
+  };
+
+  const handleDeleteClick = (booking) => {
+    setCurrentBooking(booking);
+    setIsDeleteModalVisible(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteBooking(jwt, currentBooking.id);
+      message.success("Booking deleted successfully.");
+      fetchBookings();
+      handleModalClose();
+    } catch (error) {
+      console.error("Failed to delete booking", error);
+      message.error("Failed to delete booking.");
     }
   };
 
@@ -103,20 +126,28 @@ function BookingList() {
       key: "bookCarStatus",
       dataIndex: "bookCarStatus",
       render: (status, record) => {
-        let color = status === "PENDING" ? "volcano" : status === "APPROVED" ? "green" : "red";
+        let color =
+          status === "PENDING"
+            ? "volcano"
+            : status === "APPROVED"
+            ? "green"
+            : "red";
         return (
           <Dropdown
             className="cursor-pointer"
             overlay={
               <Menu>
-                {statusOptions.map(option => (
-                  <Menu.Item key={option} onClick={() => handleStatusChange(record.id, option)}>
+                {statusOptions.map((option) => (
+                  <Menu.Item
+                    key={option}
+                    onClick={() => handleStatusChange(record.id, option)}
+                  >
                     {option}
                   </Menu.Item>
                 ))}
               </Menu>
             }
-            trigger={['click']}
+            trigger={["click"]}
           >
             <Tag color={color} key={status}>
               {status.toUpperCase()}
@@ -128,12 +159,23 @@ function BookingList() {
     {
       title: "",
       key: "operation",
-      render: () => (
+      render: (text, record) => (
         <Space size="middle">
           <Dropdown
-            menu={{
-              items,
-            }}
+            overlay={
+              <Menu>
+                <Menu.Item key="edit" onClick={() => handleEditClick(record)}>
+                  Edit
+                </Menu.Item>
+                <Menu.Item
+                  key="delete"
+                  onClick={() => handleDeleteClick(record)}
+                >
+                  Delete
+                </Menu.Item>
+              </Menu>
+            }
+            trigger={["click"]}
           >
             <a>
               <BsThreeDotsVertical />
@@ -148,13 +190,34 @@ function BookingList() {
     <div>
       <Table
         columns={columns}
-        dataSource={bookings.map((booking) => ({ ...booking, key: booking.id }))}
+        dataSource={bookings.map((booking) => ({
+          ...booking,
+          key: booking.id,
+        }))}
         showSorterTooltip={{
           target: "sorter-icon",
         }}
         pagination={{ pageSize: 5 }}
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: "max-content" }}
       />
+      {currentBooking && (
+        <EditBookingModal
+          visible={isModalVisible}
+          booking={currentBooking}
+          onClose={handleModalClose}
+          onUpdate={fetchBookings}
+          jwt={jwt}
+        />
+      )}
+      {currentBooking && (
+        <ConfirmationModal
+          heading="Delete Booking"
+          body={`Are you sure you want to delete booking ID ${currentBooking.id}?`}
+          isVisible={isDeleteModalVisible}
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleModalClose}
+        />
+      )}
     </div>
   );
 }

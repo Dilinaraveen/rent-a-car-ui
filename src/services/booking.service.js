@@ -55,3 +55,31 @@ export const changeBookingStatus = async (token, bookingId, status) => {
     throw error; // Re-throw the error after logging
   }
 };
+
+export const updateBooking = async (jwt, bookingId, bookingDetails) => {
+  const response = await axios.put(
+     API_BASE_URL+API_ENDPOINTS.UPDATE_BOOKING_ADMIN+bookingId,
+    bookingDetails,
+    {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  return response.status;
+};
+
+export const deleteBooking = async (jwt, bookingId) => {
+  try {
+    const response = await axios.delete(API_BASE_URL+API_ENDPOINTS.DELETE_BOOKING_ADMIN+bookingId, {
+      headers: {
+        Authorization: `Bearer ${jwt}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Failed to delete booking", error);
+    throw error;
+  }
+};

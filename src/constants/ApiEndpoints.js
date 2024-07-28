@@ -14,4 +14,6 @@ export const API_ENDPOINTS = {
     BOOK_A_CAR:'/api/customer/cars/book',
     GET_ALL_BOOKINGS_ADMIN: '/api/admin/car/bookings',
     CHANGE_BOOKING_STATUS: '/api/admin/car/booking/',
+    UPDATE_BOOKING_ADMIN: '/api/admin/car/booking/',
+    DELETE_BOOKING_ADMIN: '/api/admin/car/booking/'
 }
