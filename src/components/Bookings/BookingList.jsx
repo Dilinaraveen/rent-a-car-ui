@@ -3,6 +3,7 @@ import { Dropdown, Menu, Space, Table, Tag, message } from "antd";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import {
   GetAllBookingsAdmin,
+  GetAllBookingsUser,
   changeBookingStatus,
   deleteBooking,
 } from "../../services/booking.service";
@@ -18,15 +19,18 @@ function BookingList() {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [currentBooking, setCurrentBooking] = useState(null);
 
-  const { userRole, jwt } = useSelector((state) => state.auth);
+  const { userRole, jwt, userId } = useSelector((state) => state.auth);
 
   useEffect(() => {
     fetchBookings();
-  }, [jwt]);
+  }, [jwt, userId]);
 
   const fetchBookings = async () => {
     try {
-      const data = await GetAllBookingsAdmin(jwt);
+      const data =
+        userRole === "ADMIN"
+          ? await GetAllBookingsAdmin(jwt)
+          : await GetAllBookingsUser(jwt, userId);
       setBookings(data);
     } catch (error) {
       console.error("Failed to fetch bookings", error);
@@ -64,7 +68,7 @@ function BookingList() {
 
   const handleDeleteConfirm = async () => {
     try {
-      await deleteBooking(jwt, currentBooking.id);
+      await deleteBooking(jwt, currentBooking.id , userRole);
       message.success("Booking deleted successfully.");
       fetchBookings();
       handleModalClose();
@@ -133,26 +137,34 @@ function BookingList() {
             ? "green"
             : "red";
         return (
-          <Dropdown
-            className="cursor-pointer"
-            overlay={
-              <Menu>
-                {statusOptions.map((option) => (
-                  <Menu.Item
-                    key={option}
-                    onClick={() => handleStatusChange(record.id, option)}
-                  >
-                    {option}
-                  </Menu.Item>
-                ))}
-              </Menu>
-            }
-            trigger={["click"]}
-          >
-            <Tag color={color} key={status}>
-              {status.toUpperCase()}
-            </Tag>
-          </Dropdown>
+          <>
+            {userRole === "ADMIN" ? (
+              <Dropdown
+                className="cursor-pointer"
+                overlay={
+                  <Menu>
+                    {statusOptions.map((option) => (
+                      <Menu.Item
+                        key={option}
+                        onClick={() => handleStatusChange(record.id, option)}
+                      >
+                        {option}
+                      </Menu.Item>
+                    ))}
+                  </Menu>
+                }
+                trigger={["click"]}
+              >
+                <Tag color={color} key={status}>
+                  {status.toUpperCase()}
+                </Tag>
+              </Dropdown>
+            ) : (
+              <Tag color={color} key={status}>
+                {status.toUpperCase()}
+              </Tag>
+            )}
+          </>
         );
       },
     },

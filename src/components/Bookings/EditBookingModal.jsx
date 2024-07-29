@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
 import { Form, Input, Modal, message } from "antd";
 import { updateBooking } from "../../services/booking.service";
+import { useSelector } from "react-redux";
 
 const EditBookingModal = ({ visible, booking, onClose, onUpdate, jwt }) => {
   const [form] = Form.useForm();
+
+  const { userRole } = useSelector((state) => state.auth);
 
   useEffect(() => {
     console.log("booking",booking)
@@ -17,7 +20,7 @@ const EditBookingModal = ({ visible, booking, onClose, onUpdate, jwt }) => {
       const values = form.getFieldsValue();
       values.carId = booking.carId;
       console.log(values);
-      await updateBooking(jwt, booking.id, values);
+      await updateBooking(jwt, booking.id, values, userRole);
       message.success("Booking details updated successfully.");
       onUpdate();
       onClose(); 

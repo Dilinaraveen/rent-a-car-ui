@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL, API_ENDPOINTS } from "../constants/ApiEndpoints";
 
+
 export const BookACar = async (formData) => {
   try {
     const response = await axios.post(
@@ -56,9 +57,9 @@ export const changeBookingStatus = async (token, bookingId, status) => {
   }
 };
 
-export const updateBooking = async (jwt, bookingId, bookingDetails) => {
+export const updateBooking = async (jwt, bookingId, bookingDetails,userRole) => {
   const response = await axios.put(
-     API_BASE_URL+API_ENDPOINTS.UPDATE_BOOKING_ADMIN+bookingId,
+     `${API_BASE_URL}${userRole === "ADMIN" ? API_ENDPOINTS.UPDATE_BOOKING_ADMIN : API_ENDPOINTS.UPDATE_BOOKING_USER}${bookingId}`,
     bookingDetails,
     {
       headers: {
@@ -70,9 +71,9 @@ export const updateBooking = async (jwt, bookingId, bookingDetails) => {
   return response.status;
 };
 
-export const deleteBooking = async (jwt, bookingId) => {
+export const deleteBooking = async (jwt, bookingId , userRole) => {
   try {
-    const response = await axios.delete(API_BASE_URL+API_ENDPOINTS.DELETE_BOOKING_ADMIN+bookingId, {
+    const response = await axios.delete(`${API_BASE_URL}${userRole === "ADMIN" ? API_ENDPOINTS.DELETE_BOOKING_ADMIN : API_ENDPOINTS.DELETE_BOOKING_USER}${bookingId}`, {
       headers: {
         Authorization: `Bearer ${jwt}`
       }
@@ -80,6 +81,23 @@ export const deleteBooking = async (jwt, bookingId) => {
     return response.data;
   } catch (error) {
     console.error("Failed to delete booking", error);
+    throw error;
+  }
+};
+
+export const GetAllBookingsUser = async (token, userId) => {
+  try {
+    const response = await axios.get(
+      API_BASE_URL+API_ENDPOINTS.GET_ALL_BOOKINGS_USER+ userId,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error getting all bookings:", error);
     throw error;
   }
 };

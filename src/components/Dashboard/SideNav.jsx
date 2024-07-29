@@ -1,13 +1,16 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FaBookmark, FaCar, FaSearch } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FaBookmark, FaCar, FaSearch, FaUser } from "react-icons/fa";
 import { MdKeyboardArrowLeft } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/feature/authSlice";
 
 function SideNav({ closeSideBar }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const { userRole } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -27,15 +30,27 @@ function SideNav({ closeSideBar }) {
       icon: FaBookmark,
       path: "bookings",
     },
-    {
-      id: 3,
-      name: "Search",
-      icon: FaSearch,
-      path: "search",
-    },
+    // {
+    //   id: 3,
+    //   name: "Search",
+    //   icon: FaSearch,
+    //   path: "search",
+    // },
+    ...(userRole === "ADMIN" ? [{
+      id: 4,
+      name: "Users",
+      icon: FaUser,
+      path: "users",
+    }] : []),
   ];
 
   const [activeIndex, setActiveIndex] = useState();
+
+  useEffect(() => {
+    const currentPath = location.pathname.split("/")[2]; // Assuming the path is like /dashboard/cars, /dashboard/bookings, etc.
+    const activeItemIndex = menuList.findIndex(item => item.path === currentPath);
+    setActiveIndex(activeItemIndex);
+  }, [location.pathname, menuList]);
 
   return (
     <div className="shadow-sm border-r h-full flex flex-col">
