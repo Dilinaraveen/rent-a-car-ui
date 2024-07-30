@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FaBookmark, FaCar, FaSearch, FaUser } from "react-icons/fa";
+import { FaBookmark, FaCar, FaUser } from "react-icons/fa";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/feature/authSlice";

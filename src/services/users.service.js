@@ -17,3 +17,21 @@ export const GetAllUsers= async (token) => {
       throw error;
     }
   };
+
+  export const UpdateUserRole = async (jwt, userId, newRole) => {
+    try {
+      const response = await axios.put(
+        `${API_BASE_URL}${API_ENDPOINTS.CHANGE_USER_ROLE}${userId}/role`,
+        { role: newRole },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Failed to update user role', error);
+      throw error;
+    }
+  };

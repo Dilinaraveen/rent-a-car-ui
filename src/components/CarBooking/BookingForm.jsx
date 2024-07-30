@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { BookACar } from "../../services/booking.service";
@@ -31,7 +30,7 @@ function BookingForm({carId }) {
     e.preventDefault();
     console.log(formData)
     try {
-      const response = await BookACar(formData);
+      await BookACar(formData);
       setFormData({
         userId: "",
         carId: "",

@@ -23,4 +23,5 @@ export const API_ENDPOINTS = {
     DELETE_BOOKING_USER: '/api/customer/car/booking/',
 
     GET_ALL_USERS: '/api/admin/users',
+    CHANGE_USER_ROLE: '/api/admin/users/'
 }

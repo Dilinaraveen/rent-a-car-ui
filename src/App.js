@@ -6,14 +6,12 @@ import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Cars from "./components/Cars/Cars";
 import Bookings from "./components/Bookings/Bookings";
-import { useSelector } from "react-redux";
 import PrivateRoute from "./utilities/privateRoute";
 import Users from "./components/Users/Users";
 
 
 function App() {
 
-  const { isAuthenicated } = useSelector((state) => state.auth);
 
   return (
     <div className="font-outfit">

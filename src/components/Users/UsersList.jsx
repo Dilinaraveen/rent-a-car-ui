@@ -2,17 +2,15 @@ import { Dropdown, Menu, Space, Table, Tag, message } from "antd";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { GetAllUsers } from "../../services/users.service";
-import EditUserModal from "./EditUserModal";
+import { GetAllUsers, UpdateUserRole } from "../../services/users.service"; // Assuming updateUserRole is a function to update user role
 import ConfirmationModal from "../ConfirmationModal";
 
 function UsersList() {
   const [users, setUsers] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
-  const { jwt, userRole } = useSelector((state) => state.auth);
+  const { jwt } = useSelector((state) => state.auth);
 
   useEffect(() => {
     fetchUsers();
@@ -27,14 +25,15 @@ function UsersList() {
     }
   };
 
-  const handleEditClick = (user) => {
-    setCurrentUser(user);
-    setIsModalVisible(true);
-  };
-
-  const handleModalClose = () => {
-    setIsModalVisible(false);
-    setIsDeleteModalVisible(false);
+  const handleRoleChange = async (user, newRole) => {
+    try {
+      await UpdateUserRole(jwt, user.id, newRole);
+      message.success("User role updated successfully.");
+      fetchUsers();
+    } catch (error) {
+      console.error("Failed to update user role", error);
+      message.error("Failed to update user role.");
+    }
   };
 
   const handleDeleteClick = (user) => {
@@ -42,9 +41,13 @@ function UsersList() {
     setIsDeleteModalVisible(true);
   };
 
+  const handleModalClose = () => {
+    setIsDeleteModalVisible(false);
+  };
+
   const handleDeleteConfirm = async () => {
     try {
-      //await deleteUser(jwt, currentUser.id);
+      // await deleteUser(jwt, currentUser.id);
       message.success("User deleted successfully.");
       fetchUsers();
       handleModalClose();
@@ -81,7 +84,10 @@ function UsersList() {
           overlay={
             <Menu>
               {["ADMIN", "USER"].map((option) => (
-                <Menu.Item key={option} onClick={() => {}}>
+                <Menu.Item
+                  key={option}
+                  onClick={() => handleRoleChange(record, option)}
+                >
                   {option}
                 </Menu.Item>
               ))}
@@ -101,24 +107,23 @@ function UsersList() {
           <Dropdown
             overlay={
               <Menu>
-                <Menu.Item key="edit" onClick={() => handleEditClick(record)}>
-                  Edit
-                </Menu.Item>
-                <Menu.Item key="delete" onClick={() => handleDeleteClick(record)}>
+                <Menu.Item
+                  key="delete"
+                  onClick={() => handleDeleteClick(record)}
+                >
                   Delete
                 </Menu.Item>
               </Menu>
             }
             trigger={["click"]}
           >
-            <a>
-              <BsThreeDotsVertical />
-            </a>
+              <BsThreeDotsVertical className="cursor-pointer"/>
           </Dropdown>
         </Space>
       ),
     },
   ];
+
   return (
     <div>
       <Table
@@ -130,15 +135,6 @@ function UsersList() {
         pagination={{ pageSize: 5 }}
         scroll={{ x: "max-content" }}
       />
-      {currentUser && (
-        <EditUserModal
-          visible={isModalVisible}
-          user={currentUser}
-          onClose={handleModalClose}
-          onUpdate={fetchUsers}
-          jwt={jwt}
-        />
-      )}
       {currentUser && (
         <ConfirmationModal
           heading="Delete User"
