@@ -104,7 +104,7 @@ function UsersList() {
                 <Menu.Item key="edit" onClick={() => handleEditClick(record)}>
                   Edit
                 </Menu.Item>
-                <Menu.Item key="delete" onClick={() => {}}>
+                <Menu.Item key="delete" onClick={() => handleDeleteClick(record)}>
                   Delete
                 </Menu.Item>
               </Menu>

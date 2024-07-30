@@ -20,10 +20,12 @@ const EditUserModal = ({ visible, user, onClose, onUpdate, jwt }) => {
     try {
       const values = await form.validateFields();
       //await updateUser(jwt, user.id, values); 
+      message.success("User updated successfully.");
       onUpdate(); 
       onClose(); 
     } catch (error) {
       console.error("Failed to update user", error);
+      message.error("Failed to update user.");
     }
   };
 
