@@ -35,3 +35,20 @@ export const GetAllUsers= async (token) => {
       throw error;
     }
   };
+
+  export const deleteUser = async (userId,jwt) => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}${API_ENDPOINTS.DELETE_USER}${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+      );
+      return response.data;
+      
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+  

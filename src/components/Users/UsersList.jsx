@@ -2,7 +2,7 @@ import { Dropdown, Menu, Space, Table, Tag, message } from "antd";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { GetAllUsers, UpdateUserRole } from "../../services/users.service"; // Assuming updateUserRole is a function to update user role
+import { GetAllUsers, UpdateUserRole, deleteUser } from "../../services/users.service"; // Assuming updateUserRole is a function to update user role
 import ConfirmationModal from "../ConfirmationModal";
 
 function UsersList() {
@@ -47,7 +47,7 @@ function UsersList() {
 
   const handleDeleteConfirm = async () => {
     try {
-      // await deleteUser(jwt, currentUser.id);
+      await deleteUser(currentUser.id,jwt);
       message.success("User deleted successfully.");
       fetchUsers();
       handleModalClose();
