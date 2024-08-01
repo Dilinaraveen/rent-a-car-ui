@@ -31,17 +31,16 @@ function TopHeader({ setToggleBar }) {
           onClick={toggleDropdown}
         />
         {isDropdownOpen && (
-          <div className="absolute right-0 p-2 mt-2 w-48 bg-white border rounded-md shadow-lg">
-            
+          <div className="absolute p-2 right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
             <Link
               to="/settings"
-              className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+              className="block px-4 text-center hover:rounded-lg border-b  py-2 text-gray-800 text-sm hover:bg-gray-200"
               onClick={() => setIsDropdownOpen(false)}
             >
               Settings
             </Link>
             <button
-              className="block w-full border border-red-500 rounded-lg text-left px-4 py-2 text-gray-800 hover:bg-red-500 hover:text-white"
+              className="block w-full rounded-lg text-center text-sm font-bold px-4 py-2 text-gray-800 hover:bg-red-200"
               onClick={() => {
                 setIsDropdownOpen(false);
                 handleLogout();
