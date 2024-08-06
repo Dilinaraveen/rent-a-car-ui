@@ -33,7 +33,7 @@ function TopHeader({ setToggleBar }) {
         {isDropdownOpen && (
           <div className="absolute p-2 right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
             <Link
-              to="/settings"
+              to="/dashboard/settings"
               className="block px-4 text-center hover:rounded-lg border-b  py-2 text-gray-800 text-sm hover:bg-gray-200"
               onClick={() => setIsDropdownOpen(false)}
             >

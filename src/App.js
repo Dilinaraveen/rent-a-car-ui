@@ -8,6 +8,7 @@ import Cars from "./components/Cars/Cars";
 import Bookings from "./components/Bookings/Bookings";
 import PrivateRoute from "./utilities/privateRoute";
 import Users from "./components/Users/Users";
+import Settings from "./components/Settings/Settings";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             <Route path="cars" element={<PrivateRoute element={Cars} />} />
             <Route path="bookings" element={<PrivateRoute element={Bookings} />} />
             <Route path="users" element={<PrivateRoute element={Users} />} />
+            <Route path="settings" element={<PrivateRoute element={Settings} />} />
           </Route>
         </Routes>
       </Router>
